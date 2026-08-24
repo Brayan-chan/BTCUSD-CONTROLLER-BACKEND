@@ -1,0 +1,2 @@
+import{neon}from'@neondatabase/serverless';import{env}from'./env';export const sql=neon(env.databaseUrl);
+export type AlertRow={id:string;symbol:string;target_price:number;condition:'above'|'below';status:'pending'|'triggered'|'cancelled'|'failed';note:string|null;created_at:string;updated_at:string;triggered_at:string|null;current_price_at_trigger:number|null;email_status:string;email_error_message:string|null;push_status:string};
