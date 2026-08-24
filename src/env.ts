@@ -1,2 +1,13 @@
-const required=(name:string)=>{const value=process.env[name]?.trim();if(!value)throw new Error(`Missing environment variable: ${name}`);return value};
-export const env={databaseUrl:required('DATABASE_URL'),apiToken:required('API_TOKEN'),cronSecret:required('CRON_SECRET'),allowedOrigin:process.env.ALLOWED_ORIGIN?.trim()??'',recipientEmail:process.env.RECIPIENT_EMAIL?.trim()??'',expoPushToken:process.env.EXPO_PUSH_TOKEN?.trim()??'',emailJsPublicKey:process.env.EMAILJS_PUBLIC_KEY?.trim()??'',emailJsServiceId:process.env.EMAILJS_SERVICE_ID?.trim()??'',emailJsTemplateId:process.env.EMAILJS_TEMPLATE_ID?.trim()??''};
+const value=(name:string)=>process.env[name]?.trim()??'';
+export const env={
+  databaseUrl:value('DATABASE_URL')||'postgresql://invalid:invalid@127.0.0.1:5432/invalid',
+  databaseConfigured:Boolean(value('DATABASE_URL')),
+  apiToken:value('API_TOKEN'),
+  cronSecret:value('CRON_SECRET'),
+  allowedOrigin:value('ALLOWED_ORIGIN'),
+  recipientEmail:value('RECIPIENT_EMAIL'),
+  expoPushToken:value('EXPO_PUSH_TOKEN'),
+  emailJsPublicKey:value('EMAILJS_PUBLIC_KEY'),
+  emailJsServiceId:value('EMAILJS_SERVICE_ID'),
+  emailJsTemplateId:value('EMAILJS_TEMPLATE_ID'),
+};
