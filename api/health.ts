@@ -1,1 +1,9 @@
-import{json}from'../src/http';export default{async fetch(){return json({ok:true,service:'btcusd-controller-backend',runtime:'vercel-functions'})}};
+export default {
+  async fetch() {
+    return Response.json({
+      ok: true,
+      service: 'btcusd-controller-backend',
+      runtime: 'vercel-functions',
+    }, { headers: { 'Cache-Control': 'no-store' } });
+  },
+};
