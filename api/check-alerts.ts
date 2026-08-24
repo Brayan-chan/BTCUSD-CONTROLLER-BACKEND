@@ -1,4 +1,4 @@
-import{checkAlerts}from'../src/checkAlerts';
+import{checkAlerts}from'../src/checkAlerts.js';
 const json=(data:unknown,status=200)=>Response.json(data,{status,headers:{'Cache-Control':'no-store'}});
 const authorized=(request:Request)=>{const expected=process.env.CRON_SECRET?.trim()??'';const received=request.headers.get('x-cron-secret')??'';return Boolean(expected)&&received===expected};
 export default{async fetch(request:Request){if(request.method!=='POST')return json({error:'Method not allowed'},405);if(!authorized(request))return json({error:'Unauthorized'},401);try{return json({ok:true,...await checkAlerts()})}catch(error){let message=error instanceof Error?error.message:String(error);const secret=process.env.DATABASE_URL;if(secret)message=message.replaceAll(secret,'[redacted]');return json({ok:false,error:{code:'WORKER_FAILED',message}},500)}}};
