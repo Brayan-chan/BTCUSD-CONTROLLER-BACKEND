@@ -1,4 +1,4 @@
-import{sql}from'../src/db';
+import{sql}from'../src/db.js';
 const json=(data:unknown,status=200)=>Response.json(data,{status,headers:{'Cache-Control':'no-store'}});
 const authorized=(request:Request)=>{const expected=process.env.API_TOKEN?.trim()??'';const received=request.headers.get('authorization')?.replace(/^Bearer\s+/i,'')??'';return Boolean(expected)&&received===expected};
 const safeError=(error:unknown)=>{let message=error instanceof Error?error.message:String(error);const secret=process.env.DATABASE_URL;if(secret)message=message.replaceAll(secret,'[redacted]');if(/relation .* does not exist|worker_state/i.test(message))return{code:'DATABASE_SCHEMA_MISSING',message};if(/DATABASE_URL|connection string|connect|fetch failed|password|certificate|ENOTFOUND|ECONN/i.test(message))return{code:'DATABASE_CONNECTION_FAILED',message};return{code:'QUERY_FAILED',message}};
