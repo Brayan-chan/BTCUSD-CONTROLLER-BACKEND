@@ -1,1 +1,2 @@
-import{sql}from'../src/db';import{apiAuthorized,json,options}from'../src/http';export default{async fetch(r:Request){if(r.method==='OPTIONS')return options();if(!apiAuthorized(r))return json({error:'Unauthorized'},401);const rows=await sql`SELECT * FROM worker_state WHERE id=1`;return json({ok:true,worker:rows[0]??null})}};
+import{sql}from'../src/db';import{apiAuthorized,json,options}from'../src/http';import{publicError}from'../src/publicError';
+export default{async fetch(r:Request){try{if(r.method==='OPTIONS')return options();if(!apiAuthorized(r))return json({error:'Unauthorized'},401);const rows=await sql`SELECT * FROM worker_state WHERE id=1`;return json({ok:true,worker:rows[0]??null})}catch(error){return json({ok:false,error:publicError(error)},500)}}};
