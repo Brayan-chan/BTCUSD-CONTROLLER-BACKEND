@@ -1,4 +1,4 @@
-import{timingSafeEqual}from'node:crypto';import{env}from'./env';
+import{timingSafeEqual}from'node:crypto';import{env}from'./env.js';
 export const cors=env.allowedOrigin?{'Access-Control-Allow-Origin':env.allowedOrigin,Vary:'Origin'}:{};
 export const json=(data:unknown,status=200)=>Response.json(data,{status,headers:{...cors,'Cache-Control':'no-store'}});
 const equal=(a:string,b:string)=>Boolean(a)&&Boolean(b)&&a.length===b.length&&timingSafeEqual(Buffer.from(a),Buffer.from(b));
